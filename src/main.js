@@ -11,6 +11,7 @@ import login from './components/login';
 import index from './components/index';
 import adminList from './components/internal/adminList';
 import addAdmin from './components/internal/addAdmin';
+import articleList from './components/internal/articleList';
 
 import './font/iconfont.css';
 
@@ -45,6 +46,10 @@ const router = new VueRouter({
           path: 'addAdmin',
           component: addAdmin
         },
+        {
+          path: "articleList",
+          component: articleList
+        }
       ]
     }
   ]

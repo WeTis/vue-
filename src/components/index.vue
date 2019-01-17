@@ -31,9 +31,9 @@
               <el-menu-item index="添加管理员&/index/addAdmin" route="/index/addAdmin">添加管理员</el-menu-item>
             </el-submenu>
             <el-submenu index="2">
-              <template slot="title"><i class="el-icon-ali-guanliyuan"></i>管理员操作</template>
-              <el-menu-item index="2-1">管理员列表</el-menu-item>
-              <el-menu-item index="2-2">添加管理员</el-menu-item>
+              <template slot="title"><i class="el-icon-ali-wenzhangguanli"></i>文章管理</template>
+              <el-menu-item index="文章列表&/index/articleList" route="/index/articleList">文章列表</el-menu-item>
+              <el-menu-item index="添加文章&/index/addAdmin" route="/index/addAdmin">添加文章</el-menu-item>
             </el-submenu>
           </el-menu>
         </el-aside>
