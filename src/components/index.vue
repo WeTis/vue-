@@ -98,7 +98,7 @@ export default{
         "name": index.split('&')[0],
         "path": index.split('&')[1]
       });
-    }
+    },
   }
 }  
 </script>
@@ -185,4 +185,5 @@ export default{
 .breadcrumbBtn:focus{
   background-color: #007afb
 }
+
 </style>
