@@ -1,3 +1,4 @@
+<!-- 文章展示组件 -->
 <template>
   <div class="article" v-if="hideBox" v-on:click="hide">
     <div class="content" v-on:click.stop="un">

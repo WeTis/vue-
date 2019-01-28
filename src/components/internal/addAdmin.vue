@@ -1,4 +1,4 @@
-
+<!-- 添加管理员页面 -->
 <template>
   <div class="addAdmin">
     添加管理员

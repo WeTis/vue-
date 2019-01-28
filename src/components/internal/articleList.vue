@@ -1,4 +1,4 @@
-
+<!-- 文章列表页面 -->
 <template>
   <div class="articleList">
      <el-table :data="tableData" v-loading="loading"  stripe border style="width: auto;min-width: 1265px;">

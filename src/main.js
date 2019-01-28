@@ -12,6 +12,7 @@ import index from './components/index';
 import adminList from './components/internal/adminList';
 import addAdmin from './components/internal/addAdmin';
 import articleList from './components/internal/articleList';
+import addArticle from './components/internal/addArticle';
 
 import './font/iconfont.css';
 
@@ -49,6 +50,10 @@ const router = new VueRouter({
         {
           path: "articleList",
           component: articleList
+        },
+        {
+          path: "addArticle",
+          component: addArticle
         }
       ]
     }

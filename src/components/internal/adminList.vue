@@ -1,3 +1,4 @@
+<!-- 管理员列表页面 -->
 <template>
   <div class="adminList">
      <el-table :data="tableData"  stripe border style="width: auto;min-width: 1265px;">

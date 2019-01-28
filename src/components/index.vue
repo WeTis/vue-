@@ -33,7 +33,7 @@
             <el-submenu index="2">
               <template slot="title"><i class="el-icon-ali-wenzhangguanli"></i>文章管理</template>
               <el-menu-item index="文章列表&/index/articleList" route="/index/articleList">文章列表</el-menu-item>
-              <el-menu-item index="添加文章&/index/addAdmin" route="/index/addAdmin">添加文章</el-menu-item>
+              <el-menu-item index="添加文章&/index/addArticle" route="/index/addArticle">添加文章</el-menu-item>
             </el-submenu>
           </el-menu>
         </el-aside>
