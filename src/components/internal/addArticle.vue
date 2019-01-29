@@ -29,7 +29,7 @@
       <div>
         <el-upload
           class="avatar-uploader"
-          action="https://jsonplaceholder.typicode.com/posts/"
+          action="http://192.168.0.179:8080/imooc/lib/uploadImg.php"
           :show-file-list="false"
           :on-change="handleAvatarSuccess"
           :auto-upload="false"
@@ -44,6 +44,10 @@
       <div>
         <textarea :id="id"></textarea>
       </div>
+    </div>
+    <div>
+      <span class="name">上传</span>
+      <el-button type="primary" v-on:click="getText">确定</el-button>
     </div>
   </div>
 </template>
@@ -81,15 +85,42 @@ export default{
       height: 350,
       plugins: 'print preview fullpage powerpaste searchreplace autolink directionality advcode visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount tinymcespellchecker a11ychecker imagetools mediaembed  linkchecker contextmenu colorpicker textpattern help',
       toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
-
+      // we override default upload handler to simulate successful upload
+      images_upload_handler: (blobInfo, success, failure) => {
+          var formData = new FormData();
+          formData.append('file', blobInfo.blob());
+          this.$http({
+              method: 'POST',
+              url: 'api/uploadImg.php',
+              data: formData,
+              processData: false,
+              contentType: false
+            }).then((res) => {
+              console.log(res.data.location);
+               success(res.data.location);
+            })
+      }
     })
   },
   methods: {
    handleAvatarSuccess(file,filelist) {
+    console.log(file);
     this.imageUrl = URL.createObjectURL(file.raw);
-    
+    var formData = new FormData();
+    formData.append('file', file.raw);
+    this.$http({
+        method: 'POST',
+        url: 'api/uploadImg.php',
+        data: formData,
+        processData: false,
+        contentType: false
+      }).then((res) => {
+        
+      })   
    },
-    
+   getText(){
+    console.log(window.tinyMCE.activeEditor.getContent())
+   }
   },
   watch: {
    
