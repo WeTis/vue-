@@ -14,10 +14,10 @@ module.exports = {
   outputDir: 'dist',
   assetsDir: '',
   devServer: {
-    port:8787,
+    port:8989,
     proxy: {
       '/api': {
-        target: "http://192.168.0.179:8080/imooc/lib",
+        target: "http://192.168.0.179:8080/imooc/lib/",
         changeOrigin: true,
         ws: true,
         pathRewrite:{

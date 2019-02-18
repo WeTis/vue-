@@ -22,6 +22,9 @@
 </template>
 
 <script>
+
+import {Base} from './../api/base.js'
+const base = new Base();
 export default{
   name: 'login',
   props: {
@@ -34,23 +37,31 @@ export default{
       Verifyinput: '',
       VerifyinputCell: '',
       verifysrc: "http://192.168.0.179:8080/imooc/",
-      isLogin: 1,
+      isLogin: 1
     }
   },
   created(){
-    
+    // this.$http({
+    //     method: 'GET',
+    //     url: 'api',
+        
+    //   }).then((res) => {
+        
+    //   })
   },
   methods: {
     login(){
-      this.$http({
-        method: 'POST',
-        url: 'api/login.php',
-        data: this.$qs.stringify({
+      let param = {
+         method: "POST",
+         url: 'login.php',
+         data: this.$qs.stringify({
           username: this.name,
           password: this.password,
           verfiy:this.Verifyinput
-        })
-      }).then((res) => {
+         })
+      };
+      base.request(param)
+      .then((res) => {
         console.log(res);
         if(res.data.status == 90000){
           this.$router.push('/index');

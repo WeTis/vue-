@@ -14,6 +14,34 @@
       </div>
     </div>
     <div>
+      <span class="name">头像：</span>
+      <div>
+        <el-upload
+          class="avatar-uploader"
+          action="http://192.168.0.179:8080/imooc/lib/uploadImg.php"
+          :show-file-list="false"
+          :on-change="handleAvatarSuccessAva"
+          :auto-upload="false"
+          >
+          <img v-if="AVAUrl" :src="AVAUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+      </div>
+    </div>
+    <div>
+      <span class="name">类别：</span>
+      <div>
+        <el-select v-model="articleType" placeholder="请选择">
+          <el-option
+            v-for="item in allType"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
+    </div>
+    <div>
       <span class="name">摘要：</span>
       <div>
         <el-input
@@ -25,7 +53,14 @@
       </div>
     </div>
     <div>
-      <span class="name">缩略图：</span>
+      <span class="name">音频：</span>
+      <el-input
+          placeholder="请输入音频地址"
+          v-model="audioSrc">
+        </el-input>
+    </div>
+    <div>
+      <span class="name">主图：</span>
       <div>
         <el-upload
           class="avatar-uploader"
@@ -53,6 +88,8 @@
 </template>
 
 <script>
+import {Base} from './../../api/base.js';
+const base = new Base();
 export default{
   name: 'addArticle',
   props: {
@@ -62,9 +99,30 @@ export default{
     const Id = Date.now()
     return {
       imageUrl: "",
+      upImgUrl: "",
+      AVAUrl: "",
+      upAVAUrl: "",
       title:"",
       author: "",
       abstract: "",
+      audioSrc: "",
+      allType: [{
+        value: "1",
+        label: "新闻"
+      },
+      {
+        value: "2",
+        label: "体育"
+      },
+      {
+        value: "3",
+        label: "财经"
+      },
+      {
+        value: "4",
+        label: "娱乐"
+      }],
+      articleType: "",
       id: Id
     }
   },
@@ -104,21 +162,70 @@ export default{
   },
   methods: {
    handleAvatarSuccess(file,filelist) {
-    console.log(file);
-    this.imageUrl = URL.createObjectURL(file.raw);
-    var formData = new FormData();
-    formData.append('file', file.raw);
-    this.$http({
-        method: 'POST',
-        url: 'api/uploadImg.php',
-        data: formData,
-        processData: false,
-        contentType: false
-      }).then((res) => {
-        
-      })   
+      console.log(file);
+      this.imageUrl = URL.createObjectURL(file.raw);
+      var formData = new FormData();
+      formData.append('file', file.raw);
+      
+      let param = {
+          method: 'POST',
+          url: 'uploadImg.php',
+          data: formData,
+          processData: false,
+          contentType: false
+        };
+      base.request(param)
+      .then((res) => {
+        if(res.data.status == 90000){
+          this.upImgUrl = res.data.location;
+        }else{
+
+        }
+      })
+   },
+   handleAvatarSuccessAva(file,filelist){
+      this.AVAUrl = URL.createObjectURL(file.raw);
+      var formData = new FormData();
+      formData.append('file', file.raw);
+
+      let param = {
+          method: 'POST',
+          url: 'uploadImg.php',
+          data: formData,
+          processData: false,
+          contentType: false
+        };
+      base.request(param)
+      .then((res) => {
+        if(res.data.status == 90000){
+          this.upAVAUrl = res.data.location;
+        }else{
+          
+        }
+      }) 
    },
    getText(){
+
+    let param={
+      url: "addArticle.php",
+      method: "POST",
+      data: this.$qs.stringify({
+        title: this.title,
+        authorName: this.author,
+        authorImg: this.upAVAUrl,
+        articleType: this.articleType,
+        abstract: this.abstract,
+        audioSrc: this.audioSrc,
+        mainImg: this.upImgUrl,
+        content: window.tinyMCE.activeEditor.getContent()
+      })
+    };
+
+    base.request(param)
+    .then((res) => {
+       
+    });
+
     console.log(window.tinyMCE.activeEditor.getContent())
    }
   },

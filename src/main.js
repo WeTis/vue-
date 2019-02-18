@@ -16,6 +16,9 @@ import addArticle from './components/internal/addArticle';
 
 import './font/iconfont.css';
 
+import {Base} from './api/base.js';
+const base = new Base();
+
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
 Vue.prototype.$qs = qs;
@@ -68,17 +71,30 @@ new Vue({
   },
   methods: {
     isLogined(){
-      this.$http({
+      let param = {
         method: 'POST',
-        url: 'api/islogined.php',
-      }).then((res) => {
-        console.log(res);
-        if(res.data.status == 90000){
-          this.$router.push('/index');
-        }else{
-          this.$router.push('/login');
-        }
-      })
+        url: 'islogined.php'
+      };
+      base.request(param)
+       .then((res) => {
+         console.log(res);
+         if(res.data.status == 90000){
+            this.$router.push('/index');
+          }else{
+            this.$router.push('/login');
+          }
+       })
+      // this.$http({
+      //   method: 'POST',
+      //   url: 'lib/islogined.php',
+      // }).then((res) => {
+      //   
+      //   if(res.data.status == 90000){
+      //     this.$router.push('/index');
+      //   }else{
+      //     this.$router.push('/login');
+      //   }
+      // })
     }
   },
 }).$mount('#app')

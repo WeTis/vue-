@@ -38,7 +38,7 @@
           </el-menu>
         </el-aside>
           
-        <el-main>
+        <el-main class="main">
           <el-breadcrumb  style="margin-bottom: 20px;" separator="">
             <el-breadcrumb-item :to="{ path: '/index' }"><el-button class="breadcrumbBtn" type="primary" size="mini">首页<i class="el-icon-circle-close-outline el-icon--right"></i></el-button></el-breadcrumb-item>
             <el-breadcrumb-item :to="{ path: item.path }" v-for="item in currentPath">
@@ -46,7 +46,9 @@
             </el-breadcrumb-item>
            
           </el-breadcrumb>
-          <router-view></router-view>
+          <div class="mian-content">
+            <router-view></router-view>
+          </div>
         </el-main>
       </el-container>
 
@@ -185,5 +187,21 @@ export default{
 .breadcrumbBtn:focus{
   background-color: #007afb
 }
-
+.main{
+  position:relative;
+  top: 0;
+  bottom:0;
+  width: 100%;
+}
+.mian-content{
+      position: absolute;
+    top: 80px;
+    bottom: 0;
+    left: 0px;
+    right: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+    overflow: auto;
+}
+.mian-content::-webkit-scrollbar { width: 0 !important }
 </style>
