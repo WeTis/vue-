@@ -56,7 +56,8 @@ const router = new VueRouter({
         },
         {
           path: "addArticle",
-          component: addArticle
+          component: addArticle,
+          name: "addArticle"
         }
       ]
     }

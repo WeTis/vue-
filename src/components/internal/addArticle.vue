@@ -77,12 +77,13 @@
     <div>
       <span class="name">内容：</span>
       <div>
-        <textarea :id="id"></textarea>
+        <textarea :id="id">
+        </textarea>
       </div>
     </div>
     <div>
       <span class="name">上传</span>
-      <el-button type="primary" v-on:click="getText">确定</el-button>
+      <el-button type="primary"  @click="alertBox">确定</el-button>
     </div>
   </div>
 </template>
@@ -123,11 +124,29 @@ export default{
         label: "娱乐"
       }],
       articleType: "",
-      id: Id
+      id: Id,
     }
   },
   created(){
-    
+    if(this.$route.params.id){
+      // alert(this.$route.params.id);
+      this.$http({
+        method: 'POST',
+        url: 'api/getArticleList.php',
+        data: this.$qs.stringify({
+          articleId: this.$route.params.id
+        })
+      }).then((res) => {
+        console.log(res);
+        if(res.data.status == 90000){
+          // this.$router.push('/index');
+          // this.tableData = res.data.params;
+          // this.pagesNum = res.data.nums
+          // this.loading = false;
+          // alert(this.pagesNum)
+        }
+      })
+    }
   },
   beforeMount(){
     
@@ -204,8 +223,27 @@ export default{
         }
       }) 
    },
+   alertBox(){
+    this.$confirm('是否要保存此内容', '确定保存', {
+          distinguishCancelAndClose: true,
+          confirmButtonText: '保存',
+          cancelButtonText: '放弃'
+        })
+          .then(() => {
+            this.getText();
+          })
+          .catch(action => {
+            this.$message({
+              type: 'info',
+              message: action === 'cancel'
+                ? '放弃保存并离开页面'
+                : '停留在当前页面'
+            })
+          });
+   },
    getText(){
-
+    let content = (window.tinyMCE.activeEditor.getContent()).split(/<body>/)[1].split(/<\/body>/)[0];
+    console.log(this.html);
     let param={
       url: "addArticle.php",
       method: "POST",
@@ -217,16 +255,26 @@ export default{
         abstract: this.abstract,
         audioSrc: this.audioSrc,
         mainImg: this.upImgUrl,
-        content: window.tinyMCE.activeEditor.getContent()
+        content: content
       })
     };
 
     base.request(param)
     .then((res) => {
-       
+       if(res.data.status == 90000){
+         this.$message({
+              type: 'success',
+              message: "添加成功"
+          });
+         this.$router.push('/index/articleList');
+         // this.$parent.jumpToPageFn('/index/articleList');
+       }else{
+          this.$message({
+              type: 'error',
+              message: "添加失败"
+          })
+       }
     });
-
-    console.log(window.tinyMCE.activeEditor.getContent())
    }
   },
   watch: {

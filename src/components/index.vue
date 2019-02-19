@@ -101,6 +101,9 @@ export default{
         "path": index.split('&')[1]
       });
     },
+    jumpToPageFn(router){
+      // this.$router.push(router);
+    }
   }
 }  
 </script>

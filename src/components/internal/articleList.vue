@@ -11,7 +11,7 @@
       <el-table-column fixed="right" label="操作" min-width="200" width="auto" align="center">
         <template slot-scope="scope">
           <el-button type="text" size="small" v-on:click="open5(scope.row.content,scope.row.title)">查看</el-button>
-          <el-button type="text" size="small">编辑</el-button>
+          <el-button type="text" size="small" v-on:click="write(scope.row.id)">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -99,6 +99,14 @@ export default{
     },
     changeStatus(){
 
+    },
+    write(id){
+      this.$router.push({
+          name: 'addArticle',
+          params: {
+            id: id
+          }
+        })
     }
   }
 }  
