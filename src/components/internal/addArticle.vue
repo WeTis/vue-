@@ -125,6 +125,7 @@ export default{
       }],
       articleType: "",
       id: Id,
+      articleId: ''
     }
   },
   created(){
@@ -139,11 +140,18 @@ export default{
       }).then((res) => {
         console.log(res);
         if(res.data.status == 90000){
-          // this.$router.push('/index');
-          // this.tableData = res.data.params;
-          // this.pagesNum = res.data.nums
-          // this.loading = false;
-          // alert(this.pagesNum)
+            let params = res.data.params.res[0];
+            this.title=params.title;
+            this.author=params.authorName;
+            this.abstract=params.abstract;
+            this.audioSrc= params.audioSrc;
+            this.imageUrl= params.mainImg;
+            this.upImgUrl= params.mainImg;
+            this.AVAUrl= params.authorImg;
+            this.upAVAUrl= params.authorImg;
+            this.articleType=params.articleType;
+            this.articleId = params.id;
+            window.tinyMCE.activeEditor.setContent(params.content);
         }
       })
     }
@@ -230,7 +238,12 @@ export default{
           cancelButtonText: '放弃'
         })
           .then(() => {
-            this.getText();
+            if(!this.articleId){
+              this.getText();
+            }else{
+              this.uploadArticle();
+            }
+            
           })
           .catch(action => {
             this.$message({
@@ -256,6 +269,41 @@ export default{
         audioSrc: this.audioSrc,
         mainImg: this.upImgUrl,
         content: content
+      })
+    };
+
+    base.request(param)
+    .then((res) => {
+       if(res.data.status == 90000){
+         this.$message({
+              type: 'success',
+              message: "添加成功"
+          });
+         this.$router.push('/index/articleList');
+         // this.$parent.jumpToPageFn('/index/articleList');
+       }else{
+          this.$message({
+              type: 'error',
+              message: "添加失败"
+          })
+       }
+    });
+   },
+   uploadArticle(){
+    let content = (window.tinyMCE.activeEditor.getContent()).split(/<body>/)[1].split(/<\/body>/)[0];
+    let param={
+      url: "upDateArticle.php",
+      method: "POST",
+      data: this.$qs.stringify({
+        title: this.title,
+        authorName: this.author,
+        authorImg: this.upAVAUrl,
+        articleType: this.articleType,
+        abstract: this.abstract,
+        audioSrc: this.audioSrc,
+        mainImg: this.upImgUrl,
+        content: content,
+        unmId: this.articleId
       })
     };
 
